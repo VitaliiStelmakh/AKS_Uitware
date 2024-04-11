@@ -6,9 +6,6 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 3.94.0 "
     }
-    random = {
-      source  = "hashicorp/random"
-      version = "~>3.6.0"}
   }  
   backend "azurerm" {
     resource_group_name   = "tfstate"

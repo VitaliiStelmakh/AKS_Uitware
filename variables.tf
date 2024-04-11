@@ -24,7 +24,6 @@ variable "node_count" {
   default     = 1
 }
 
-
 variable "subscription_id" {
     description = "The Azure Subscription ID"
   type = string
