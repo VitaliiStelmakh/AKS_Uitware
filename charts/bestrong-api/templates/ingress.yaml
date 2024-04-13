@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-api-ingress
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- with .Values.ingress }}
+    # nginx.ingress.kubernetes.io/canary: {{ .canary.allowCanary}}
+    # nginx.ingress.kubernetes.io/canary-by-header: {{ .canary.header}}
+    nginx.ingress.kubernetes.io/rewrite-target: "{{ .target }}$2"
+    # nginx.ingress.kubernetes.io/canary-weight: "{{ .canary.weight }}"
+spec:
+  ingressClassName: nginx-ingress
+  rules:
+  - http:
+      paths:
+      - path: {{ .ingressPath }}(/|$)(.*)
+        pathType: {{ .pathType }}
+    {{- end }}
+        backend:
+          service:
+            name: {{ .Release.Name }}-api-svc
+            port:
+              number: {{ .Values.service.port }}

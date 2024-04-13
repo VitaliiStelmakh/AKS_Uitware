@@ -1,0 +1,30 @@
+# Deployment configurations
+replicas: 2
+containerSpecImagePullPolicy: Always 
+containerName: bestrong 
+image: maksymperehinets/bestrong-api
+imageTag: latest 
+resources:
+  requestsMemory: 250Mi 
+  requestsCpu: 250m 
+  limitsMemory: 500Mi 
+  limitsCpu: 500m 
+port: 80
+
+# Service configuration
+service:
+  port: 80
+
+# Specify ingress configuration for targets and path
+ingress:
+  target: /
+  ingressPath: /test
+  pathType: ImplementationSpecific
+  canary:
+    header: "X-Canary"
+    weight: 0
+    allowCanary: "false"
+
+
+
+# PS: not tested with cert manager yet 
