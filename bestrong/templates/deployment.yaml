@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bestrong-deployment
+  namespace: bestrong
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: bestrong
+  template:
+    metadata:
+      labels:
+        app: bestrong
+    spec:
+      containers:
+        - name: bestrong
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bestrong-service
+  namespace: bestrong
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app: bestrong
+  ports:
+    - protocol: TCP
+      port: {{ .Values.service.port }}
+      targetPort: 80
