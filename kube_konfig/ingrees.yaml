@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bestrong-ingress
+  namespace: bestrong
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: "nginx"
+  tls:
+  - hosts:
+    - "peetro.eastus.cloudapp.azure.com"
+    secretName: bestrong-tls
+  rules:
+  - host: "peetro.eastus.cloudapp.azure.com"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: bestrong-service
+            port:
+              number: 80
