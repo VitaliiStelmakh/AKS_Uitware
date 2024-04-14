@@ -8,13 +8,7 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-
-variables:
-  registryName: 'HelmContainer.azurecr.io'
-  repository: 'helmcontainer'
-  chartName: 'bestrong-api'
-  clusterServiceConnection: 'aks'
-  namespace: 'default'  
+ 
 steps:
 - task: HelmDeploy@0
   inputs:
