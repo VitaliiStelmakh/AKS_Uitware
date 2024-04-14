@@ -35,6 +35,8 @@ steps:
     inlineScript: |
       echo "Logging into Azure Container Registry..."
       az acr login --name $(acrName)
+      pwd
+      ls
       echo "Pushing Helm chart to Azure Container Registry as OCI artifact..."
       helm push bestrong-api-$(Build.BuildId).tgz oci://$(acrName).azurecr.io/mychart
   displayName: 'Push Helm Chart as OCI Artifact'
