@@ -9,15 +9,43 @@ pool:
   vmImage: 'ubuntu-latest'
 
  
-steps:
-- task: HelmDeploy@0
-  inputs:
-    connectionType: 'Kubernetes Service Connection'
-    kubernetesServiceEndpoint: 'aks'
-    namespace: 'default'
-    command: 'upgrade'
-    chartName: 'helmcontainer.azurecr.io/bestrong-api'
-    releaseName: 'bestrong-api'
-    arguments: '--version 174'
+variables:
+  aksClusterName: 'AKSCluster'
+  aksResourceGroup: 'AKSUitware'
+  acrName: 'helmcontainer'
+  chartName: 'bestrong-api'
+  chartVersion: '174'
+  helmReleaseName: 'bestrong-api-release'
+  serviceConnection: 'Azure for Students(12c692a0-00e1-447a-8d87-2712018a0472)'
 
+stages:
+- stage: Deploy
+  jobs:
+  - job: DeployToAKS
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+
+    # Authenticate to Azure CLI
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: $(serviceConnection)
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          helm repo add $(acrName) https://$(acrName).azurecr.io/helm --username $(servicePrincipalId) --password $(servicePrincipalKey)
+          helm repo update
+      displayName: 'Add ACR Helm repository'
+
+    # Install or upgrade Helm release
+    - task: HelmDeploy@0
+      inputs:
+        connectionType: 'Kubernetes Service Connection'
+        kubernetesServiceEndpoint: 'aks'
+        namespace: '<Your-Kubernetes-Namespace>'
+        command: 'upgrade'
+        chartName: '$(acrName).azurecr.io/$(chartName)'
+        releaseName: '$(helmReleaseName)'
+        arguments: '--install --version $(chartVersion)'
+        valueFile: 'values-prod.yaml'
 
