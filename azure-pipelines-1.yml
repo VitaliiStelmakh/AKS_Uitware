@@ -16,7 +16,7 @@ steps:
     kubernetesServiceEndpoint: 'aks'
     namespace: 'default'
     command: 'upgrade'
-    chartName: 'HelmContainer.azurecr.io/bestrong-api'
+    chartName: 'helmcontainer.azurecr.io/bestrong-api'
     releaseName: 'bestrong-api'
     arguments: '--version 174'
 
