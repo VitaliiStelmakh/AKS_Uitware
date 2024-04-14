@@ -14,28 +14,16 @@ variables:
   repository: 'helmcontainer'
   chartName: 'bestrong-api'
   clusterServiceConnection: 'aks'
-  namespace: 'default'
-
+  namespace: 'default'  
 steps:
-
 - task: HelmDeploy@0
-  displayName: 'Helm upgrade'
   inputs:
     connectionType: 'Kubernetes Service Connection'
-    kubernetesServiceConnection: '$(clusterServiceConnection)'
-    namespace: '$(namespace)'
+    kubernetesServiceEndpoint: 'aks'
+    namespace: 'default'
     command: 'upgrade'
-    chartType: 'Name'
-    chartName: '$(registryName)/$(repository)/$(chartName)'
-    releaseName: 'bestrong-api-release'
-    waitForExecution: true
-    arguments: '--install'
+    chartName: 'HelmContainer.azurecr.io/bestrong-api'
+    releaseName: 'bestrong-api'
+    arguments: '--version 174'
 
 
-- task: HelmDeploy@0
-  inputs:
-    connectionType: 'Azure Resource Manager'
-    azureSubscription: 'Azure for Students(12c692a0-00e1-447a-8d87-2712018a0472)'
-    azureResourceGroup: 'aks'
-    kubernetesCluster: 'vit'
-    command: 'ls'
