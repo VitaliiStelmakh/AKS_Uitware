@@ -26,5 +26,6 @@ steps:
 
 - script: |
     echo "Pushing Helm chart to Azure Container Registry as OCI artifact..."
+    ./charts/bestrong-api
     helm push bestrong-api-$(Build.BuildId).tgz oci://$(acrName).azurecr.io/mychart
   displayName: 'Push Helm Chart as OCI Artifact'
