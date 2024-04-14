@@ -1,0 +1,20 @@
+trigger:
+- main
+
+resources:
+- repo: self
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: HelmDeploy@0
+  inputs:
+    connectionType: 'Kubernetes Service Connection'
+    kubernetesServiceEndpoint: 'Your-Kubernetes-Service-Connection-Name'
+    namespace: 'default'
+    command: 'upgrade'
+    chartName: 'HelmContainer/charts/bestrong-api'
+    releaseName: 'bestrong-api-release'
+    arguments: '--set image.repository=YourACRName.azurecr.io/your-image-name,image.tag=latest'
+    waitForExecution: true
