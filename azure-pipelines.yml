@@ -23,11 +23,13 @@ steps:
     cd ./charts/bestrong-api # Navigate to the Helm chart directory
     pwd
     helm package . --version $(Build.BuildId) --destination .  # Package the chart, no need to specify version here
+    ls
   displayName: 'Package Helm Chart'
 
 - script: |
     echo "Pushing Helm chart to Azure Container Registry as OCI artifact..."
     cd ./charts/bestrong-api
     pwd
+    ls
   #  helm push bestrong-api-$(Build.BuildId).tgz oci://$(acrName).azurecr.io/mychart
   displayName: 'Push Helm Chart as OCI Artifact'
