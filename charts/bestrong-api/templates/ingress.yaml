@@ -5,16 +5,19 @@ metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
     {{- with .Values.ingress }}
-    # nginx.ingress.kubernetes.io/canary: {{ .canary.allowCanary}}
-    # nginx.ingress.kubernetes.io/canary-by-header: {{ .canary.header}}
+    cert-manager.io/cluster-issuer: {{ .clasteIssuareName }}
     nginx.ingress.kubernetes.io/rewrite-target: "{{ .target }}$2"
-    # nginx.ingress.kubernetes.io/canary-weight: "{{ .canary.weight }}"
 spec:
   ingressClassName: nginx-ingress
+  tls:
+  - hosts:
+    - {{ .hostname }}
+    secretName: {{ .tlsSercret }}
   rules:
-  - http:
+  - host: {{ .hostname }}
+    http:
       paths:
-      - path: {{ .ingressPath }}(/|$)(.*)
+      - path: {{ .ingressPath }}(|$)(.*)
         pathType: {{ .pathType }}
     {{- end }}
         backend:

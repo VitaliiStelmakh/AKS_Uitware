@@ -1,29 +1,46 @@
 # Deployment configurations
-replicas: 2
-containerSpecImagePullPolicy: Always 
-containerName: bestrong 
-image: maksymperehinets/bestrong-api
-imageTag: latest 
-resources:
-  requestsMemory: 250Mi 
-  requestsCpu: 250m 
-  limitsMemory: 500Mi 
-  limitsCpu: 500m 
-port: 80
+stable:
+  replicas: 2
+  version: v1
+  containerSpecImagePullPolicy: Always 
+  containerName: bestrong 
+  image: maksymperehinets/bestrong-api
+  imageTag: latest 
+  resources:
+    requestsMemory: 250Mi 
+    requestsCpu: 250m 
+    limitsMemory: 500Mi 
+    limitsCpu: 500m 
+  port: 80
+
+# Deployment configurations
+canary:
+  replicas: 0
+  version: v2
+  containerSpecImagePullPolicy: Always 
+  containerName: bestrong 
+  image: nginx 
+  imageTag: latest 
+  resources:
+    requestsMemory: 250Mi 
+    requestsCpu: 250m 
+    limitsMemory: 500Mi 
+    limitsCpu: 500m 
+  port: 80 
 
 # Service configuration
-service:
-  port: 80
+service: 
+  port: 80 
 
 # Specify ingress configuration for targets and path
 ingress:
   target: /
-  ingressPath: /test
+  ingressPath: /
   pathType: ImplementationSpecific
-  canary:
-    header: "X-Canary"
-    weight: 0
-    allowCanary: "false"
+  clasteIssuareName: "letsencript"
+  hostname: test.loc
+  tlsSercret: jlkjsdfjirj
+
 
 
 

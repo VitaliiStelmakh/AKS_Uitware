@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-api-canary
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Release.Name }}-api
+    version: {{ .Values.canary.version }}
+spec:
+  replicas: {{ .Values.canary.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-api
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-api
+    spec:
+    {{-  with .Values.canary }}
+      containers:
+      - name: {{ .containerName }}
+        image: "{{ .image }}:{{ .imageTag }}"
+        imagePullPolicy: {{ .containerSpecImagePullPolicy }}
+        resources:
+          requests:
+            memory: {{ .resources.requestsMemory }}
+            cpu: {{ .resources.requestsCpu }}
+          limits:
+            memory: {{ .resources.limitsMemory }}
+            cpu: {{ .resources.limitsCpu }}
+        ports:
+        - containerPort: {{ .port }}
+  {{- end }}
