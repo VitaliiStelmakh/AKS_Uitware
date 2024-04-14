@@ -24,13 +24,14 @@ steps:
     helm package . --version $(Build.BuildId)
   displayName: 'Package Helm Chart'
 
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: 'Azure for Students(12c692a0-00e1-447a-8d87-2712018a0472)'  # Name of the Azure service connection
-    scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
-      echo "Pushing Helm chart to Azure Container Registry..."
-      az acr helm push $(Build.BuildId)-mychart.tgz --name $(acrName)
-  displayName: 'Push Helm Chart to ACR'
+- script: |
+    echo "Packaging Helm charts..."
+    cd ./helm-charts/bestrong-api  
+    helm package . --version $(Build.BuildId)
+    echo "Converting Helm chart to OCI format..."
+    helm chart save . $(acrName).azurecr.io/mychart:$(Build.BuildId)
+    echo "Pushing Helm chart to Azure Container Registry as OCI artifact..."
+    helm chart push $(acrName).azurecr.io/mychart:$(Build.BuildId)
+  displayName: 'Package and Push Helm Chart as OCI Artifact'
+
 
