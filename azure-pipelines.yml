@@ -4,7 +4,7 @@ trigger:
     - main  # Adjust branch name as necessary
   paths:
     include:
-    - ./charts/bestrong-api*  # Adjust path as necessary
+    - ./charts/bestrong-api  # Adjust path as necessary
 
 pool:
   vmImage: 'ubuntu-latest'
