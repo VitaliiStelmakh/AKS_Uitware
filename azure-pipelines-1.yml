@@ -48,5 +48,5 @@ stages:
         chartName: '$(acrName).azurecr.io/$(chartName)'
         releaseName: '$(helmReleaseName)'
         arguments: '--install --version $(chartVersion)'
-        valueFile: 'values-prod.yaml'
+        valueFile: 'values.yaml'
 
