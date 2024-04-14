@@ -21,7 +21,7 @@ steps:
 - script: |
     echo "Packaging Helm charts..."
     cd ./charts/bestrong-api # Navigate to the Helm chart directory
-    helm package . --destination . # Package the chart, no need to specify version here
+    helm package . --version $(Build.BuildId) --destination .  # Package the chart, no need to specify version here
   displayName: 'Package Helm Chart'
 
 - script: |
