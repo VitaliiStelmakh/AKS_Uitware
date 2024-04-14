@@ -11,7 +11,7 @@ pool:
 
 variables:
   acrName: 'helmcontainer'  # Add your Azure Container Registry name
-  serviceConnection: 'azsc'  # Name of the Azure service connection
+  serviceConnection: 'Azure for Students(12c692a0-00e1-447a-8d87-2712018a0472)'  # Name of the Azure service connection
 
 steps:
 - task: HelmInstaller@0
@@ -39,5 +39,5 @@ steps:
       pwd
       ls
       echo "Pushing Helm chart to Azure Container Registry as OCI artifact..."
-      helm push bestrong-api-$(Build.BuildId).tgz oci://$(acrName).azurecr.io/mychart
+      helm push bestrong-api-$(Build.BuildId).tgz oci://$(acrName).azurecr.io/charts
   displayName: 'Push Helm Chart as OCI Artifact'
