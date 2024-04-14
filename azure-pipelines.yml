@@ -11,9 +11,7 @@ pool:
 
 variables:
   acrName: 'HelmContainer'  # Add your Azure Container Registry name
-  servicePrincipalId: 3ed5bd2c-7b57-4b13-8303-bd6d683a8589
-  servicePrincipalKey: pq78Q~f4vgS06w_Sq7dOst0cn2uEoHuHryh93biN
-  tenantId: 7631cd62-5187-4e15-8b8e-ef653e366e7a
+  serviceConnection: 'Azure for Students(12c692a0-00e1-447a-8d87-2712018a0472)'  # Name of the Azure service connection
 
 steps:
 - task: HelmInstaller@0
@@ -21,26 +19,22 @@ steps:
     helmVersion: '3.14.4'
     installKubectl: true
 
-
 - script: |
     echo "Packaging Helm charts..."
     cd ./charts/bestrong-api # Navigate to the Helm chart directory
     pwd
-    helm package . --version $(Build.BuildId) --destination .  # Package the chart with an auto-generated version
+    helm package . --version $(Build.BuildId) --destination .  # Package the chart, no need to specify version here
     ls
   displayName: 'Package Helm Chart'
 
-- script: |
-    echo "Pushing Helm chart to Azure Container Registry as OCI artifact..."
-    cd ./charts/bestrong-api
-    pwd
-    ls
-    az login --service-principal -u $(servicePrincipalId) -p $(servicePrincipalKey) --tenant $(tenantId)
-    az acr login --name $(acrName)
-    helm push bestrong-api-$(Build.BuildId).tgz oci://$(acrName).azurecr.io/mychart
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: $(serviceConnection)
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      echo "Logging into Azure Container Registry..."
+      az acr login --name $(acrName)
+      echo "Pushing Helm chart to Azure Container Registry as OCI artifact..."
+      helm push bestrong-api-$(Build.BuildId).tgz oci://$(acrName).azurecr.io/mychart
   displayName: 'Push Helm Chart as OCI Artifact'
-
-- script: |
-    echo "Cleaning up..."
-    helm registry logout oci://$(acrName).azurecr.io
-  displayName: 'Logout from ACR'
