@@ -10,7 +10,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  acrName: 'HelmContainer'  # Add your Azure Container Registry name
+  acrName: 'helmcontainer'  # Add your Azure Container Registry name
   serviceConnection: 'azsc'  # Name of the Azure service connection
 
 steps:
