@@ -31,5 +31,5 @@ steps:
     cd ./charts/bestrong-api
     pwd
     ls
-  #  helm push bestrong-api-$(Build.BuildId).tgz oci://$(acrName).azurecr.io/mychart
+    helm push bestrong-api-$(Build.BuildId).tgz oci://$(acrName).azurecr.io/mychart
   displayName: 'Push Helm Chart as OCI Artifact'
