@@ -1,20 +1,41 @@
 trigger:
-- main
-
-resources:
-- repo: self
-
+  branches:
+    include:
+    - main  # Adjust branch name as necessary
+  paths:
+    include:
+    - ./charts/bestrong-api  # Adjust path as necessary
 pool:
   vmImage: 'ubuntu-latest'
 
+
+variables:
+  registryName: 'HelmContainer.azurecr.io'
+  repository: 'helmcontainer'
+  chartName: 'bestrong-api'
+  clusterServiceConnection: 'aks'
+  namespace: 'default'
+
 steps:
+
 - task: HelmDeploy@0
+  displayName: 'Helm upgrade'
   inputs:
     connectionType: 'Kubernetes Service Connection'
-    kubernetesServiceEndpoint: 'Your-Kubernetes-Service-Connection-Name'
-    namespace: 'default'
+    kubernetesServiceConnection: '$(clusterServiceConnection)'
+    namespace: '$(namespace)'
     command: 'upgrade'
-    chartName: 'HelmContainer/charts/bestrong-api'
+    chartType: 'Name'
+    chartName: '$(registryName)/$(repository)/$(chartName)'
     releaseName: 'bestrong-api-release'
-    arguments: '--set image.repository=YourACRName.azurecr.io/your-image-name,image.tag=latest'
     waitForExecution: true
+    arguments: '--install'
+
+
+- task: HelmDeploy@0
+  inputs:
+    connectionType: 'Azure Resource Manager'
+    azureSubscription: 'Azure for Students(12c692a0-00e1-447a-8d87-2712018a0472)'
+    azureResourceGroup: 'aks'
+    kubernetesCluster: 'vit'
+    command: 'ls'
