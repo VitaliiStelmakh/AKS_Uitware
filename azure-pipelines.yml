@@ -11,7 +11,7 @@ pool:
 
 variables:
   acrName: 'HelmContainer'  # Add your Azure Container Registry name
-  serviceConnection: 'Azure for Students(12c692a0-00e1-447a-8d87-2712018a0472)'  # Name of the Azure service connection
+  serviceConnection: 'azsc'  # Name of the Azure service connection
 
 steps:
 - task: HelmInstaller@0
