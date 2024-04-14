@@ -20,7 +20,7 @@ steps:
 
 - script: |
     echo "Packaging Helm charts..."
-    cd ./charts\bestrong-api # Navigate to the Helm chart directory
+    cd ./charts/bestrong-api # Navigate to the Helm chart directory
     helm package . --version $(Build.BuildId)
   displayName: 'Package Helm Chart'
 
