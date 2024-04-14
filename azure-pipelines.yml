@@ -11,9 +11,7 @@ pool:
 
 variables:
   acrName: 'HelmContainer'  # Add your Azure Container Registry name
-  servicePrincipalId: 3ed5bd2c-7b57-4b13-8303-bd6d683a8589
-  servicePrincipalKey: pq78Q~f4vgS06w_Sq7dOst0cn2uEoHuHryh93biN
-  tenantId: 7631cd62-5187-4e15-8b8e-ef653e366e7a
+
 
 steps:
 - task: HelmInstaller@0
@@ -21,11 +19,6 @@ steps:
     helmVersion: '3.14.4'
     installKubectl: true
 
-- script: |
-    echo "Logging into Azure..."
-    az login --service-principal -u $(servicePrincipalId) -p $(servicePrincipalKey) --tenant $(tenantId)
-    az acr login --name $(acrName)
-  displayName: 'Azure Login'
 
 - script: |
     echo "Packaging Helm charts..."
@@ -41,6 +34,8 @@ steps:
     pwd
     ls
     helm push bestrong-api-$(Build.BuildId).tgz oci://$(acrName).azurecr.io/mychart
+    env:
+    AZURE_CREDENTIALS: ACRConnection
   displayName: 'Push Helm Chart as OCI Artifact'
 
 - script: |
