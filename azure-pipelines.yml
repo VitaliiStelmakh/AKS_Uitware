@@ -13,7 +13,7 @@ variables:
   acrName: 'HelmContainer'  # Add your Azure Container Registry name
   servicePrincipalId: 3ed5bd2c-7b57-4b13-8303-bd6d683a8589
   servicePrincipalKey: pq78Q~f4vgS06w_Sq7dOst0cn2uEoHuHryh93biN
-  tenant: 7631cd62-5187-4e15-8b8e-ef653e366e7a
+  tenantId: 7631cd62-5187-4e15-8b8e-ef653e366e7a
 
 steps:
 - task: HelmInstaller@0
