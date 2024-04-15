@@ -24,7 +24,7 @@ steps:
       kubernetesServiceEndpoint: 'aks'
       namespace: 'default'
       command: 'upgrade'
-      chartType: 'FilePath'
+      chartType: 'Name'
       chartVersion: $(Build.BuildId)
       chartPath:  oci://$(acrName).azurecr.io/helm/bestrong-api:$(Build.BuildId)
       releaseName: 'bestrong'
