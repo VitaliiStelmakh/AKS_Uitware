@@ -14,6 +14,7 @@ steps:
     inputs:
       command: package
       chartPath: charts/bestrong-api
+      chartVersion: $(Build.BuildId)
       arguments: '--app-version $(Build.BuildId)'
       destination: .
 
