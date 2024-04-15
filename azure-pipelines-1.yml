@@ -15,9 +15,10 @@ variables:
 
 
 steps:
-- task: HelmInstaller@1
+- task: HelmInstaller@0
   inputs:
-    helmVersionToInstall: '3.x'
+    helmVersion: '3.14.4'
+    installKubectl: true
 
 - task: AzureCLI@2
   inputs:
