@@ -22,7 +22,7 @@ steps:
 - script: |
     echo "Packaging Helm charts..."
     cd ./charts/bestrong-api # Navigate to the Helm chart directory
-    helm package . --version latest --destination .  # Package the chart, no need to specify version here
+    helm package . --version $(Build.BuildId) --destination .  # Package the chart, no need to specify version here
   displayName: 'Package Helm Chart'
 
 - task: AzureCLI@2
