@@ -35,7 +35,7 @@ stages:
         inlineScript: |
           az acr login --name $(acrName)
           export HELM_EXPERIMENTAL_OCI=1
-          helm repo add $(acrName) https://$(acrName).azurecr.io/$(chartName):174
+          helm repo add $(acrName) https://$(acrName).azurecr.io/$(chartName)
           helm repo update
       displayName: 'Add ACR Helm repository'
 
