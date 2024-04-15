@@ -29,18 +29,17 @@ steps:
       echo 'Logging into Azure Container Registry'
       az acr login --name helmcontainer
   displayName: 'Login to ACR'
+
 - task: HelmDeploy@0
   inputs:
     connectionType: 'Kubernetes Service Connection'
-    kubernetesServiceConnection: 'aks'
+    kubernetesServiceEndpoint: 'aks'
     namespace: 'default'
-    command: 'upgrade'
-    chartType: 'Name'
-    chartName: 'myhelmtest'
+    command: 'install'
+    chartType: 'OCI'
+    chartName: 'oci://helmcontainer.azurecr.io/helm/bestrong-api'
     releaseName: 'myhelmtest'
-    valueFile: 'values.yaml'
-    arguments: '--install --version 184 --repo oci://$(containerRegistry)/helm/bestrong-api'
-  displayName: 'Install/Upgrade Helm Chart'
+    version: '184'
 
 - script: |
     kubectl get services
