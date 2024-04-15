@@ -1,6 +1,6 @@
 # Deployment configurations
 stable:
-  replicas: 2
+  replicas: 1
   version: v1
   containerSpecImagePullPolicy: Always 
   containerName: bestrong 
@@ -15,7 +15,7 @@ stable:
 
 # Deployment configurations
 canary:
-  replicas: 0
+  replicas: 1
   version: v2
   containerSpecImagePullPolicy: Always 
   containerName: bestrong 
