@@ -10,7 +10,7 @@ pool:
 
 
 variables:
-  acrName: 'helmcontainer'  # Add your Azure Container Registry name
+  containerRegistry: 'helmcontainer'  # Add your Azure Container Registry name
   serviceConnection: 'Azure for Students(12c692a0-00e1-447a-8d87-2712018a0472)'  # Name of the Azure service connection
 
 
@@ -32,12 +32,18 @@ steps:
 - task: HelmDeploy@0
   inputs:
     connectionType: 'Kubernetes Service Connection'
-    kubernetesServiceEndpoint: 'aks'
+    kubernetesServiceConnection: 'aks'
     namespace: 'default'
-    command: 'install'
-    chartType: 'FilePath'
-    chartPath: 'oci://helmcontainer.azurecr.io/helm/bestrong-api'
+    command: 'upgrade'
+    chartType: 'Name'
+    chartName: 'myhelmtest'
     releaseName: 'myhelmtest'
-    version: '184'
-  displayName: 'Deploy Helm chart'
+    valueFile: 'values.yaml'
+    arguments: '--install --version 184 --repo oci://$(containerRegistry)/helm'
+  displayName: 'Install/Upgrade Helm Chart'
+
+- script: |
+    kubectl get services
+  displayName: 'List Kubernetes Services'
+
 
