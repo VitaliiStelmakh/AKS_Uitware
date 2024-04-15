@@ -8,18 +8,19 @@ steps:
       helmVersion: '3.14.4'
       installKubectl: true
 
-  - task: AzureCLI@2
-    inputs:
-      azureSubscription: $(serviceConnection)
-      scriptType: 'bash'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        echo 'Logging into Azure Container Registry'
-        az acr login --name helmcontainer
-    displayName: 'Login to ACR'
+  # - task: AzureCLI@2
+  #   inputs:
+  #     azureSubscription: $(serviceConnection)
+  #     scriptType: 'bash'
+  #     scriptLocation: 'inlineScript'
+  #     inlineScript: |
+  #       echo 'Logging into Azure Container Registry'
+  #       az acr login --name helmcontainer
+  #   displayName: 'Login to ACR'
 
   - script: |
       helm pull oci://$(acrName).azurecr.io/helm/bestrong-api --version $(Build.BuildId) -d .
+      ls
     displayName: 'Pull helm chart from ACR'
 
 
