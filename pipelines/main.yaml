@@ -6,8 +6,7 @@ trigger:
     include:
     - ./charts/bestrong-api
     exclude:
-      - README.md
-      - pipelines
+      - "*"
 
 
 
