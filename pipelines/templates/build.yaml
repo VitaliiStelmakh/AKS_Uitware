@@ -13,7 +13,7 @@ steps:
     displayName: Packing helm chart
     inputs:
       command: package
-      chartPath: $(./charts/bestrong-api)
+      chartPath: $(charts/bestrong-api)
       arguments: '--app-version $(Build.BuildId)'
       destination: .
 
