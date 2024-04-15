@@ -35,5 +35,5 @@ steps:
       az acr login --name $(acrName)
       cd ./charts/bestrong-api # Navigate to the Helm chart directory
       echo "Pushing Helm chart to Azure Container Registry as OCI artifact..."
-      helm push bestrong-api-$(Build.BuildId).tgz oci://$(acrName).azurecr.io
+      helm push bestrong-api-$(Build.BuildId).tgz oci://$(acrName).azurecr.io/helm
   displayName: 'Push Helm Chart as OCI Artifact'
