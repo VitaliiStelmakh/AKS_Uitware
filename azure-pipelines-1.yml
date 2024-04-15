@@ -31,7 +31,7 @@ steps:
   displayName: 'Login to ACR'
 
 - script: |
-    helm pull oci://helmcontainer.azurecr.io/helm/bestrong-api --version 184
+    helm pull oci://helmcontainer.azurecr.io/helm/bestrong-api --version 199
     ls
     pwd
   displayName: get helm chart on agent
@@ -43,7 +43,7 @@ steps:
     namespace: 'default'
     command: 'upgrade'
     chartType: 'FilePath'
-    chartPath: 'bestrong-api-184.tgz'
+    chartPath: 'bestrong-api-199.tgz'
     releaseName: 'bestrong'
     arguments: '--create-namespace --install'
 
