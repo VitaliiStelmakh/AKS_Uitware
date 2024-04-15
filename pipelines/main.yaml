@@ -17,15 +17,15 @@ variables:
 
 
 stages:
-- stage: Pack helm chart and push to ACR
+- stage: Pack_helm_chart_and_push_to_ACR
   displayName: Helm chart packing and push to ACR 
   pool:
     vmImage: 'ubuntu-latest'
   jobs:
-  - job: Helm install pack and push
+  - job: Helm_install_pack_and_push
     displayName: Helm install pack and push to ACR
     steps:
-      - template: pipelines/templates/build.yaml
+      - template: templates/build.yaml
         parameters:
           acrName: $(acrName)
           serviceConnection: $(serviceConnection)
