@@ -18,15 +18,20 @@ steps:
         az acr login --name helmcontainer
     displayName: 'Login to ACR'
 
+  - script: |
+      helm pull oci://$(acrName).azurecr.io/helm/bestrong-api-$(Build.BuildId) --version $(Build.BuildId) -d .
+    displayName: 'Pull helm chart from ACR'
+
+
   - task: HelmDeploy@0
     inputs:
       connectionType: 'Kubernetes Service Connection'
       kubernetesServiceEndpoint: 'aks'
       namespace: 'default'
       command: 'upgrade'
-      chartType: 'Name'
-      chartVersion: $(Build.BuildId)
-      chartName: '$(acrName).azurecr.io/helm/bestrong-api'
+      chartType: 'FilePath'
+      chartVersion:
+      chartPath:  "./bestrong-api-$(Build.BuildId).tgz"
       releaseName: 'bestrong'
       arguments: '--create-namespace --install'
 
