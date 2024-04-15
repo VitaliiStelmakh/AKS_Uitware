@@ -44,7 +44,7 @@ steps:
     command: 'upgrade'
     chartType: 'FilePath'
     chartPath: 'bestrong-api-184.tgz'
-    releaseName: 'helmdemo'
+    releaseName: 'bestrong'
     arguments: '--create-namespace --install'
 
 
