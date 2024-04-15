@@ -20,7 +20,6 @@ steps:
 
   - script: |
       helm pull oci://$(acrName).azurecr.io/helm/bestrong-api --version $(Build.BuildId) -d .
-      ls
     displayName: 'Pull helm chart from ACR'
 
 
@@ -31,8 +30,8 @@ steps:
       namespace: 'default'
       command: 'upgrade'
       chartType: 'FilePath'
-      chartVersion:
-      chartPath:  "./bestrong-api.tgz"
+      chartVersion: $(Build.BuildId)
+      chartPath:  "./bestrong-api-$(Build.BuildId).tgz"
       releaseName: 'bestrong'
       arguments: '--create-namespace --install'
 
