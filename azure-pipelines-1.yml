@@ -36,10 +36,6 @@ steps:
     pwd
   displayName: get helm chart on agent
   
-- script: |
-    ls
-    pwd
-  displayName: get helm chaафыаывфаыrt on agent
 - task: HelmDeploy@0
   inputs:
     connectionType: 'Kubernetes Service Connection'
@@ -47,7 +43,7 @@ steps:
     namespace: 'default'
     command: 'upgrade'
     chartType: 'FilePath'
-    chartPath: 'bestron-api-184.tgz'
+    chartPath: 'bestrong-api-184.tgz'
     releaseName: 'helmdemo'
     arguments: '--create-namespace --install'
 
