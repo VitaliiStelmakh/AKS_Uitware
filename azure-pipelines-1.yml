@@ -10,7 +10,7 @@ pool:
 
 
 variables:
-  containerRegistry: 'helmcontainer'  # Add your Azure Container Registry name
+  containerRegistry: 'helmcontainer.azurecr.io'  # Add your Azure Container Registry name
   serviceConnection: 'Azure for Students(12c692a0-00e1-447a-8d87-2712018a0472)'  # Name of the Azure service connection
 
 
@@ -27,7 +27,7 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: |
       echo 'Logging into Azure Container Registry'
-      az acr login --name helmcontainer.azurecr.io
+      az acr login --name helmcontainer
   displayName: 'Login to ACR'
 - task: HelmDeploy@0
   inputs:
@@ -39,7 +39,7 @@ steps:
     chartName: 'myhelmtest'
     releaseName: 'myhelmtest'
     valueFile: 'values.yaml'
-    arguments: '--install --version 184 --repo oci://$(containerRegistry)/helm'
+    arguments: '--install --version 184 --repo oci://$(containerRegistry)/helm/bestrong'
   displayName: 'Install/Upgrade Helm Chart'
 
 - script: |
