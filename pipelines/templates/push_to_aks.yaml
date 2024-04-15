@@ -26,7 +26,7 @@ steps:
       command: 'upgrade'
       chartType: 'Name'
       chartVersion: $(Build.BuildId)
-      chartName: 'oci://$(acrName).azurecr.io/helm/bestrong-api:$(Build.BuildId)'
+      chartName: 'oci://$(acrName).azurecr.io/helm/bestrong-api'
       releaseName: 'bestrong'
       arguments: '--create-namespace --install'
 
