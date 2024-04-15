@@ -4,7 +4,7 @@ trigger:
     - main  
   paths:
     include:
-    - ./charts/bestrong-api
+    - charts/bestrong-api/*
     exclude:
       - "*"
 
