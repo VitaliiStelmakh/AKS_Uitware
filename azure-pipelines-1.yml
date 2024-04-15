@@ -44,7 +44,7 @@ stages:
       inputs:
         connectionType: 'Kubernetes Service Connection'
         kubernetesServiceEndpoint: 'aks'
-        namespace: '<Your-Kubernetes-Namespace>'
+        namespace: 'default'
         command: 'upgrade'
         chartName: '$(acrName).azurecr.io/$(chartName)'
         releaseName: '$(helmReleaseName)'
