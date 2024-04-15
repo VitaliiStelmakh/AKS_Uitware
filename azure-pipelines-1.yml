@@ -47,8 +47,4 @@ steps:
     releaseName: 'helmdemo'
     arguments: '--create-namespace --install'
 
-- script: |
-    kubectl get services
-  displayName: 'List Kubernetes Services'
-
 
