@@ -30,16 +30,20 @@ steps:
       az acr login --name helmcontainer
   displayName: 'Login to ACR'
 
+- script: |
+    helm pull oci://helmcontainer.azurecr.io/helm/bestrong-api --version 184
+    ls
+  displayName: get helm chart on agent
 - task: HelmDeploy@0
   inputs:
     connectionType: 'Kubernetes Service Connection'
     kubernetesServiceEndpoint: 'aks'
     namespace: 'default'
-    command: 'install'
-    chartType: 'OCI'
-    chartName: 'oci://helmcontainer.azurecr.io/helm/bestrong-api'
-    releaseName: 'myhelmtest'
-    version: '184'
+    command: 'upgrade'
+    chartType: 'FilePath'
+    chartPath: 'bestron-api-184.tgz'
+    releaseName: 'helmdemo'
+    arguments: '--create-namespace --install'
 
 - script: |
     kubectl get services
