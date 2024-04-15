@@ -33,7 +33,13 @@ steps:
 - script: |
     helm pull oci://helmcontainer.azurecr.io/helm/bestrong-api --version 184
     ls
+    pwd
   displayName: get helm chart on agent
+  
+- script: |
+    ls
+    pwd
+  displayName: get helm chaафыаывфаыrt on agent
 - task: HelmDeploy@0
   inputs:
     connectionType: 'Kubernetes Service Connection'
