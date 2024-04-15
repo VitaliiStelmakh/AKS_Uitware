@@ -39,7 +39,7 @@ steps:
     chartName: 'myhelmtest'
     releaseName: 'myhelmtest'
     valueFile: 'values.yaml'
-    arguments: '--install --version 184 --repo oci://$(containerRegistry)/helm/bestrong'
+    arguments: '--install --version 184 --repo oci://$(containerRegistry)/helm/bestrong-api'
   displayName: 'Install/Upgrade Helm Chart'
 
 - script: |
