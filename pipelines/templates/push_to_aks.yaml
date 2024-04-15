@@ -19,6 +19,7 @@ steps:
     displayName: 'Login to ACR'
 
   - script: |
+      echo Pulling helm chart from repo
       helm pull oci://$(acrName).azurecr.io/helm/bestrong-api --version $(Build.BuildId) -d .
     displayName: 'Pull helm chart from ACR'
 
