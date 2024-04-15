@@ -1,0 +1,32 @@
+# Push helm chart to ACR
+parameters:
+  acrName: ""
+  serviceConnection: ""
+steps:
+  - task: HelmInstaller@0
+    inputs:
+      helmVersion: '3.14.4'
+      installKubectl: true
+
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: $(serviceConnection)
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        echo 'Logging into Azure Container Registry'
+        az acr login --name helmcontainer
+    displayName: 'Login to ACR'
+
+  - task: HelmDeploy@0
+    inputs:
+      connectionType: 'Kubernetes Service Connection'
+      kubernetesServiceEndpoint: 'aks'
+      namespace: 'default'
+      command: 'upgrade'
+      chartType: 'FilePath'
+      chartPath:  "oci://$(acrName).azurecr.io/helm/bestrong-api:$(Build.BuildId)"
+      releaseName: 'bestrong'
+      arguments: '--create-namespace --install'
+
+

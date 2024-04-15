@@ -17,7 +17,7 @@ variables:
 
 
 stages:
-- stage: Pack_helm_chart_and_push_to_ACR
+- stage: PackHelmChart
   displayName: Helm chart packing and push to ACR 
   pool:
     vmImage: 'ubuntu-latest'
@@ -26,6 +26,20 @@ stages:
     displayName: Helm install pack and push to ACR
     steps:
       - template: templates/build.yaml
+        parameters:
+          acrName: $(acrName)
+          serviceConnection: $(serviceConnection)
+
+- stage: PushAKS
+  displayName: Upgrade AKS deployment to new chart version
+  condition: succeeded('PackHelmChart)
+  pool:
+    vmImage: 'ubuntu-latest'
+  jobs:
+  - job: UpdateChartOnAKS
+    displayName: Update or install helm chart to new version(one that was built previously) in AKS 
+    steps:
+      - template: templates/push_to_aks.yaml
         parameters:
           acrName: $(acrName)
           serviceConnection: $(serviceConnection)
