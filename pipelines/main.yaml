@@ -32,7 +32,7 @@ stages:
 
 - stage: PushAKS
   displayName: Upgrade AKS deployment to new chart version
-  condition: succeeded('PackHelmChart)
+  condition: succeeded('PackHelmChart')
   pool:
     vmImage: 'ubuntu-latest'
   jobs:
