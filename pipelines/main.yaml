@@ -1,0 +1,31 @@
+trigger:
+  branches:
+    include:
+    - main  
+  paths:
+    include:
+    - ./charts/bestrong-api
+    exclude:
+      - README.md
+      - pipelines
+
+
+
+variables:
+  acrName: 'helmcontainer'  # Add your Azure Container Registry name
+  serviceConnection: 'Azure for Students(12c692a0-00e1-447a-8d87-2712018a0472)'  # Name of the Azure service connection
+
+
+stages:
+- stage: Pack_helm_chart_and_push_to_ACR
+  displayName: Helm chart packing and push to ACR 
+  pool:
+    vmImage: 'ubuntu-latest'
+  jobs:
+  - job: Helm_install_pack_and_push
+    displayName: Helm install pack and push to ACR
+    steps:
+      - template: templates/build.yaml
+        parameters:
+          acrName: $(acrName)
+          serviceConnection: $(serviceConnection)

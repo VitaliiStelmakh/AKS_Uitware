@@ -1,0 +1,32 @@
+# Push helm chart to ACR
+parameters:
+  acrName: ""
+  serviceConnection: ""
+steps:
+  - task: HelmInstaller@0
+    displayName: Install helm and kubectl
+    inputs:
+      helmVersion: '3.14.4'
+      installKubectl: true
+  
+  - task: HelmDeploy@0
+    displayName: Packing helm chart
+    inputs:
+      command: package
+      chartPath: charts/bestrong-api
+      chartVersion: $(Build.BuildId)
+      arguments: '--app-version $(Build.BuildId)'
+      destination: .
+
+  - task: AzureCLI@2
+    displayName: 'Push Helm Chart as OCI Artifact'
+    inputs:
+      azureSubscription: $(serviceConnection)
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        echo "Logging into Azure Container Registry..."
+        az acr login --name $(acrName)
+        echo "Pushing Helm chart to Azure Container Registry as OCI artifact..."
+        helm push bestrong-api-$(Build.BuildId).tgz oci://$(acrName).azurecr.io/helm
+    

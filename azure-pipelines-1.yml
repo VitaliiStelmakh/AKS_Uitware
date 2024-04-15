@@ -1,0 +1,50 @@
+trigger:
+  branches:
+    include:
+    - main  # Adjust branch name as necessary
+  paths:
+    include:
+    - ./charts/bestrong-api  # Adjust path as necessary
+pool:
+  vmImage: 'ubuntu-latest'
+
+
+variables:
+  containerRegistry: 'helmcontainer.azurecr.io'  # Add your Azure Container Registry name
+  serviceConnection: 'Azure for Students(12c692a0-00e1-447a-8d87-2712018a0472)'  # Name of the Azure service connection
+
+
+steps:
+- task: HelmInstaller@0
+  inputs:
+    helmVersion: '3.14.4'
+    installKubectl: true
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: $(serviceConnection)
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      echo 'Logging into Azure Container Registry'
+      az acr login --name helmcontainer
+  displayName: 'Login to ACR'
+
+- script: |
+    helm pull oci://helmcontainer.azurecr.io/helm/bestrong-api --version 199
+    ls
+    pwd
+  displayName: get helm chart on agent
+  
+- task: HelmDeploy@0
+  inputs:
+    connectionType: 'Kubernetes Service Connection'
+    kubernetesServiceEndpoint: 'aks'
+    namespace: 'default'
+    command: 'upgrade'
+    chartType: 'FilePath'
+    chartPath: 'bestrong-api-199.tgz'
+    releaseName: 'bestrong'
+    arguments: '--create-namespace --install'
+
+
