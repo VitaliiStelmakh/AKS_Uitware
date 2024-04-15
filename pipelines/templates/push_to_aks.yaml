@@ -19,7 +19,7 @@ steps:
     displayName: 'Login to ACR'
 
   - script: |
-      helm pull oci://$(acrName).azurecr.io/helm/bestrong-api-$(Build.BuildId) --version $(Build.BuildId) -d .
+      helm pull oci://$(acrName).azurecr.io/helm/bestrong-api --version $(Build.BuildId) -d .
     displayName: 'Pull helm chart from ACR'
 
 
@@ -31,7 +31,7 @@ steps:
       command: 'upgrade'
       chartType: 'FilePath'
       chartVersion:
-      chartPath:  "./bestrong-api-$(Build.BuildId).tgz"
+      chartPath:  "./bestrong-api.tgz"
       releaseName: 'bestrong'
       arguments: '--create-namespace --install'
 
