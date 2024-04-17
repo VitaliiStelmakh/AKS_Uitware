@@ -2,7 +2,7 @@
 stable:
   replicas: 2
   version: v1
-  containerSpecImagePullPolicy: Always s
+  containerSpecImagePullPolicy: Always 
   containerName: bestrong 
   image: maksymperehinets/bestrong-api
   imageTag: latest 
