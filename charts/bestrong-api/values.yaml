@@ -31,7 +31,7 @@ ingress:
   ingressPath: /
   pathType: ImplementationSpecific
   clasteIssuareName: "letsencrypt-prod"
-  hostname: bestrong.eastus.cloudapp.azure.com
+  hostname: test.loc #bestrong.eastus.cloudapp.azure.com
   tlsSercret: jlkjsdfjirj
 
 

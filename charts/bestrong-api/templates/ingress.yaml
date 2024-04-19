@@ -9,8 +9,8 @@ metadata:
     {{- with .Values.ingress }}
     cert-manager.io/cluster-issuer: {{ .clasteIssuareName }}
     nginx.ingress.kubernetes.io/rewrite-target: "{{ .target }}$2"
+    kubernetes.io/ingress.class: "nginx"
 spec:
-  ingressClassName: nginx
   tls:
   - hosts:
     - {{ .hostname }}
