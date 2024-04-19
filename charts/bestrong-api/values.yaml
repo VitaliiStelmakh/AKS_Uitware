@@ -4,7 +4,7 @@ stable:
   version: v1
   containerSpecImagePullPolicy: Always 
   containerName: bestrong 
-  image: nginx
+  image: maksymperehinets/bestrong-api
   imageTag: latest 
   resources:
     requestsMemory: 250Mi 
@@ -18,7 +18,7 @@ canary:
   timeBeforeRollBack: 60
   servicePort: 80
   interval: 15s
-  maxFailed: 20
+  maxFailed: 5
   maxTraficRouted: 50
   stepWeight: 25
   minRequestsSuccessRate: 90 
