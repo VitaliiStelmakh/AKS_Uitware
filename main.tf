@@ -31,3 +31,84 @@ resource "azurerm_kubernetes_cluster" "aks" {
     type = "SystemAssigned"
   }
 }
+
+
+
+resource "kubernetes_namespace" "ingress-nginx" {
+  metadata {
+    name = "ingress-nginx"
+  }
+}
+
+resource "helm_release" "nginx_ingress" {
+  name       = "ingress-nginx"
+  repository = "https://kubernetes.github.io/ingress-nginx"
+  chart      = "ingress-nginx"
+  namespace = "ingress-nginx"
+
+  set{
+    name = "controller.service.externalTrafficPolicy"
+    value = "Local"
+  }
+
+  set {
+    name  = "controller.metrics.enabled"
+    value = "true"
+  }
+
+  set {
+    name  = "controller.podAnnotations.prometheus.io/scrape"
+    value = "true"
+  }
+
+  set {
+    name  = "controller.podAnnotations.prometheus.io/port"
+    value = "10254"
+  }
+}
+
+resource "kubernetes_namespace" "cert" {
+  metadata {
+    name = "cert-manager"
+  }
+}
+resource "helm_release" "cert_manager" {
+  name       = "cert-manager"
+  repository = "https://charts.jetstack.io"
+  chart      = "cert-manager"
+  namespace = "cert-manager"
+
+  set {
+    name  = "installCRDs"
+    value = "true"
+  }
+}
+
+resource "helm_release" "flagger" {
+  name       = "flagger"
+  repository = "https://flagger.app/"
+  chart      = "flagger"
+
+  set {
+    name  = "prometheus.install"
+    value = "true"
+  }
+
+  set {
+    name  = "meshProvider"
+    value = "nginx"
+  }
+}
+
+resource "kubernetes_namespace" "loadtest" {
+  metadata {
+    name = "loadtester"
+  }
+}
+
+resource "helm_release" "flagger_loadtester" {
+  name       = "flagger-loadtester"
+  repository = "https://flagger.app/"
+  chart      = "loadtester"
+  namespace = "loadtester"
+}
