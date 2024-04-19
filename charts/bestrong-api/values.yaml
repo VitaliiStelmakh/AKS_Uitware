@@ -4,7 +4,7 @@ stable:
   version: v1
   containerSpecImagePullPolicy: Always 
   containerName: bestrong 
-  image: maksymperehinets/bestrong-api
+  image: nginx
   imageTag: latest 
   resources:
     requestsMemory: 250Mi 
@@ -13,24 +13,17 @@ stable:
     limitsCpu: 500m 
   port: 80
 
-# Deployment configurations
+# Canary roll out policy 
 canary:
-  replicas: 0
-  version: v2
-  containerSpecImagePullPolicy: Always 
-  containerName: bestrong 
-  image: nginx 
-  imageTag: latest 
-  resources:
-    requestsMemory: 250Mi 
-    requestsCpu: 250m 
-    limitsMemory: 500Mi 
-    limitsCpu: 500m 
-  port: 80 
+  timeBeforeRollBack: 60
+  servicePort: 80
+  interval: 15s
+  maxFailed: 5
+  maxTraficRouted: 50
+  stepWeight: 25
+  minRequestsSuccessRate: 90 
+  cheakIntervall: 10s
 
-# Service configuration
-service: 
-  port: 80 
 
 # Specify ingress configuration for targets and path
 ingress:
@@ -38,7 +31,7 @@ ingress:
   ingressPath: /
   pathType: ImplementationSpecific
   clasteIssuareName: "letsencrypt-prod"
-  hostname: bestrong.eastus.cloudapp.azure.com
+  hostname: testk8s.testfornow.com
   tlsSercret: jlkjsdfjirj
 
 
