@@ -22,7 +22,7 @@ canary:
   maxTraficRouted: 50
   stepWeight: 25
   minRequestsSuccessRate: 99 
-  cheakIntervall: 10s
+  cheakIntervall: 2m
 
 
 # Specify ingress configuration for targets and path

@@ -4,7 +4,7 @@ metadata:
   name: {{ .Release.Name }}-api-ingress
   namespace: {{ .Release.Namespace }}
   labels:
-    app: podinfo
+    app: ingress
   annotations:
     {{- with .Values.ingress }}
     cert-manager.io/cluster-issuer: {{ .clasteIssuareName }}
