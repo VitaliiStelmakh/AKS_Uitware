@@ -3,9 +3,11 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}-api-ingress
   namespace: {{ .Release.Namespace }}
+  labels:
+    app: podinfo
   annotations:
     {{- with .Values.ingress }}
-    cert-manager.io/cluster-issuer: {{ .clasteIssuareName }}
+    # cert-manager.io/cluster-issuer: {{ .clasteIssuareName }}
     nginx.ingress.kubernetes.io/rewrite-target: "{{ .target }}$2"
 spec:
   ingressClassName: nginx-ingress
@@ -22,6 +24,6 @@ spec:
     {{- end }}
         backend:
           service:
-            name: {{ .Release.Name }}-api-svc
+            name: {{ .Release.Name }}-api
             port:
-              number: {{ .Values.service.port }}
+              number: {{ .Values.canary.servicePort }}
