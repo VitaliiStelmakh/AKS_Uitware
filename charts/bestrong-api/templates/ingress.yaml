@@ -7,7 +7,7 @@ metadata:
     app: podinfo
   annotations:
     {{- with .Values.ingress }}
-    # cert-manager.io/cluster-issuer: {{ .clasteIssuareName }}
+    cert-manager.io/cluster-issuer: {{ .clasteIssuareName }}
     nginx.ingress.kubernetes.io/rewrite-target: "{{ .target }}$2"
 spec:
   ingressClassName: nginx-ingress
