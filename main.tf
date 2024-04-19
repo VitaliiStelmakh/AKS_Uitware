@@ -88,6 +88,7 @@ resource "helm_release" "flagger" {
   name       = "flagger"
   repository = "https://flagger.app/"
   chart      = "flagger"
+  namespace = "ingress-nginx"
 
   set {
     name  = "prometheus.install"
