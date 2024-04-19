@@ -4,7 +4,7 @@ stable:
   version: v1
   containerSpecImagePullPolicy: Always 
   containerName: bestrong 
-  image: maksymperehinets/bestrong-api
+  image: nginx
   imageTag: latest 
   resources:
     requestsMemory: 250Mi 
@@ -17,12 +17,12 @@ stable:
 canary:
   timeBeforeRollBack: 60
   servicePort: 80
-  interval: 5s
-  maxFailed: 10
+  interval: 15s
+  maxFailed: 20
   maxTraficRouted: 50
-  stepWeight: 15
+  stepWeight: 25
   minRequestsSuccessRate: 90 
-  cheakIntervall: 30s
+  cheakIntervall: 10s
 
 
 # Specify ingress configuration for targets and path
