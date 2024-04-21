@@ -8,9 +8,9 @@ stable:
   imageTag: latest
   resources:
     requestsMemory: 50Mi
-    requestsCpu: 150m
+    requestsCpu: 50m
     limitsMemory: 90Mi
-    limitsCpu: 300m
+    limitsCpu: 100m
   port: 80
 
 # Canary roll out policy
