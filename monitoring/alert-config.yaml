@@ -6,12 +6,15 @@ metadata:
     prometheus: alert-rule
     alertconfig: "true"
     role: alert-rules
-  name: prometheus-high-cpu-consumption-rules
+  name: prometheus-high-consumption-rules
 spec:
   groups:
   - name: HighConsumption
     rules:
     - alert: HighCPUConsumption
+      annotations:
+          description: API pods CPU consumption more than 70% it may exceed it limits soon.
+          summary: Pods can may exceed resource limits for CPU.
       expr: |
         100 * (
             avg(
@@ -25,21 +28,12 @@ spec:
                 )
             ) by (pod)
         ) > 70
----
-apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
-metadata:
-  creationTimestamp: null
-  labels:
-    prometheus: alert-rule
-    alertconfig: "true"
-    role: alert-rules
-  name: prometheus-high-ram-consumption-rules
-spec:
-  groups:
-  - name: HighConsumption
-    rules:
+      labels:
+        severity: critical
     - alert: HighRAMConsumption
+      annotations:
+          description: API pods RAM consumption more than 70% it may exceed it limits soon.
+          summary: Pods can may exceed resource limits for RAM.
       expr: |
         100 *(avg(
           sum(container_memory_usage_bytes{pod=~"bestrong.*"})
@@ -48,6 +42,8 @@ spec:
           sum(kube_pod_container_resource_limits{resource="memory", pod=~"bestrong.*"})
             by (pod)
         ))  > 70
+      labels:
+        severity: critical
 
 
 
