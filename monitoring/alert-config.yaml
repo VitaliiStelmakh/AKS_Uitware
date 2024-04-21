@@ -6,7 +6,7 @@ metadata:
     prometheus: alert-rule
     alertconfig: "true"
     role: alert-rules
-  name: prometheus-high-consumption-rules
+  name: prometheus-high-cpu-consumption-rules
 spec:
   groups:
   - name: HighConsumption
@@ -34,7 +34,7 @@ metadata:
     prometheus: alert-rule
     alertconfig: "true"
     role: alert-rules
-  name: prometheus-high-consumption-rules
+  name: prometheus-high-ram-consumption-rules
 spec:
   groups:
   - name: HighConsumption
