@@ -9,8 +9,6 @@ trigger:
     exclude:
       - "*"
 
-
-
 variables:
   acrName: 'helmcontainer'  # Add your Azure Container Registry name
   serviceConnection: 'Azure for Students(12c692a0-00e1-447a-8d87-2712018a0472)'  # Name of the Azure service connection
@@ -37,7 +35,7 @@ stages:
         inputs:
           namespace: monitoring
           manifests: ./monitoring/alert-config.yaml
-          serviceConnection: $(serviceConnection)
+          kubernetesServiceConnection: aks
 
 
 - stage: PushAKS
