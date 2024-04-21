@@ -16,12 +16,12 @@ spec:
         100 * (
             avg(
                 sum(
-                    irate(container_cpu_usage_seconds_total{pod=~"test-.*"}[5m])
+                    irate(container_cpu_usage_seconds_total{pod=~"bestrong.*"}[5m])
                 )
             ) by (pod) / 
             avg(
                 sum(
-                    kube_pod_container_resource_limits{resource="cpu", pod=~"test-.*"}
+                    kube_pod_container_resource_limits{resource="cpu", pod=~"bestrong.*"}
                 )
             ) by (pod)
         ) > 70
@@ -41,13 +41,13 @@ spec:
     rules:
     - alert: HighRAMConsumption
       expr: |
-        avg(
-          sum(container_memory_usage_bytes{pod=~"test-.*"})
+        100 *(avg(
+          sum(container_memory_usage_bytes{pod=~"bestrong.*"})
             by (pod) 
           / 
-          sum(kube_pod_container_resource_limits{resource="memory", pod=~"test-.*"})
+          sum(kube_pod_container_resource_limits{resource="memory", pod=~"bestrong.*"})
             by (pod)
-        ) * 100 > 70
+        ))  > 70
 
 
 
