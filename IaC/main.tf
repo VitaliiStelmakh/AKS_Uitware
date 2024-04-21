@@ -127,6 +127,6 @@ resource "helm_release" "prometheus_stack" {
   namespace  = "monitoring"
 
   values = [
-    "${file("monitoring/values.yaml")}"
+    "${file("../monitoring/values.yaml")}"
   ]
 }
