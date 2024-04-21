@@ -2,18 +2,18 @@
 stable:
   replicas: 2
   version: v1
-  containerSpecImagePullPolicy: Always 
-  containerName: bestrong 
-  image: nginx #maksymperehinets/bestrong-api
-  imageTag: latest 
+  containerSpecImagePullPolicy: Always
+  containerName: bestrong
+  image: maksymperehinets/bestrong-api
+  imageTag: latest
   resources:
-    requestsMemory: 250Mi 
-    requestsCpu: 250m 
-    limitsMemory: 500Mi 
-    limitsCpu: 500m 
+    requestsMemory: 50Mi
+    requestsCpu: 150m
+    limitsMemory: 90Mi
+    limitsCpu: 300m
   port: 80
 
-# Canary roll out policy 
+# Canary roll out policy
 canary:
   timeBeforeRollBack: 60
   servicePort: 80
@@ -21,9 +21,8 @@ canary:
   maxFailed: 5
   maxTraficRouted: 50
   stepWeight: 25
-  minRequestsSuccessRate: 99 
+  minRequestsSuccessRate: 90
   cheakIntervall: 2m
-
 
 # Specify ingress configuration for targets and path
 ingress:
@@ -33,8 +32,6 @@ ingress:
   clasteIssuareName: "letsencrypt-prod"
   hostname: bestrong.eastus.cloudapp.azure.com
   tlsSercret: jlkjsdfjirj
-
-
 clusterIssuer:
   email: vitalikstelmah60@gmail.com
   server: "https://acme-v02.api.letsencrypt.org/directory"

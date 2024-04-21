@@ -1,0 +1,54 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  creationTimestamp: null
+  labels:
+    prometheus: alert-rule
+    alertconfig: "true"
+    role: alert-rules
+  name: prometheus-high-consumption-rules
+spec:
+  groups:
+  - name: HighConsumption
+    rules:
+    - alert: HighCPUConsumption
+      expr: |
+        100 * (
+            avg(
+                sum(
+                    irate(container_cpu_usage_seconds_total{pod=~"test-.*"}[5m])
+                )
+            ) by (pod) / 
+            avg(
+                sum(
+                    kube_pod_container_resource_limits{resource="cpu", pod=~"test-.*"}
+                )
+            ) by (pod)
+        ) > 70
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  creationTimestamp: null
+  labels:
+    prometheus: alert-rule
+    alertconfig: "true"
+    role: alert-rules
+  name: prometheus-high-consumption-rules
+spec:
+  groups:
+  - name: HighConsumption
+    rules:
+    - alert: HighRAMConsumption
+      expr: |
+        avg(
+          sum(container_memory_usage_bytes{pod=~"test-.*"})
+            by (pod) 
+          / 
+          sum(kube_pod_container_resource_limits{resource="memory", pod=~"test-.*"})
+            by (pod)
+        ) * 100 > 70
+
+
+
+
