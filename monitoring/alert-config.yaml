@@ -12,9 +12,12 @@ spec:
   - name: HighConsumption
     rules:
     - alert: HighCPUConsumption
+      labels:
+        severity: critical
       annotations:
           description: API pods CPU consumption more than 70% it may exceed it limits soon.
           summary: Pods can may exceed resource limits for CPU.
+      for: 1m
       expr: |
         100 * (
             avg(
@@ -28,12 +31,13 @@ spec:
                 )
             ) by (pod)
         ) > 70
-      labels:
-        severity: critical
     - alert: HighRAMConsumption
       annotations:
           description: API pods RAM consumption more than 70% it may exceed it limits soon.
           summary: Pods can may exceed resource limits for RAM.
+      labels:
+        severity: critical
+      for: 1m
       expr: |
         100 *(avg(
           sum(container_memory_usage_bytes{pod=~"bestrong.*"})
@@ -42,8 +46,6 @@ spec:
           sum(kube_pod_container_resource_limits{resource="memory", pod=~"bestrong.*"})
             by (pod)
         ))  > 70
-      labels:
-        severity: critical
 
 
 
