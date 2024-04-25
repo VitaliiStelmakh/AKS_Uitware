@@ -4,7 +4,7 @@ stable:
   version: v1
   containerSpecImagePullPolicy: Always
   containerName: bestrong
-  image: nginx #nginx #maksymperehinets/bestrong-api
+  image: maksymperehinets/bestrong-api #maksymperehinets/bestrong-api
   imageTag: latest
   resources:
     requestsMemory: 50Mi
