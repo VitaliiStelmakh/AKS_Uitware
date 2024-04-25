@@ -1,29 +1,17 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
 metadata:
   name: {{ .Release.Name }}-api-ingress
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app: ingress
-  annotations:
-    {{- with .Values.ingress }}
-    cert-manager.io/cluster-issuer: {{ .clasteIssuareName }}
-    nginx.ingress.kubernetes.io/rewrite-target: "{{ .target }}$2"
 spec:
-  ingressClassName: nginx
+  web-secure:
+    address: ":443"
+  routes:
+    - match: Host(`{{ .Values.ingress.hostname }}`)
+      kind: Rule
+      services:
+        - name: {{ .Release.Name }}-api
+          kind: TraefikService
+          port: {{ .Values.stable.port }}
   tls:
-  - hosts:
-    - {{ .hostname }}
-    secretName: {{ .tlsSercret }}
-  rules:
-  - host: {{ .hostname }}
-    http:
-      paths:
-      - path: {{ .ingressPath }}(|$)(.*)
-        pathType: {{ .pathType }}
-    {{- end }}
-        backend:
-          service:
-            name: {{ .Release.Name }}-api
-            port:
-              number: {{ .Values.canary.servicePort }}
+    secretName: traefik-cert
+    certResolver: letsencrypt-prod
