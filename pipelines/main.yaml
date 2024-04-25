@@ -5,10 +5,9 @@ trigger:
   paths:
     include:
     - charts/bestrong-api/*
+    - monitoring/*
     exclude:
       - "*"
-
-
 
 variables:
   acrName: 'helmcontainer'  # Add your Azure Container Registry name
@@ -28,6 +27,16 @@ stages:
         parameters:
           acrName: $(acrName)
           serviceConnection: $(serviceConnection)
+  - job: Update_prometheus_alert_rules
+    displayName: Update or create config for prometheus alerts
+    steps:
+      - task: KubernetesManifest@0
+        displayName: Deploy K8s manifests
+        inputs:
+          namespace: monitoring
+          manifests: ./monitoring/alert-config.yaml
+          kubernetesServiceConnection: aks
+
 
 - stage: PushAKS
   displayName: Upgrade AKS deployment to new chart version

@@ -4,11 +4,11 @@ resource "azurerm_resource_group" "aks" {
   location = var.location
 }
 resource "azurerm_container_registry" "acr" {
-  name                     = var.acr_name
-  resource_group_name      = azurerm_resource_group.aks.name
-  location                 = azurerm_resource_group.aks.location
-  sku                      = "Basic"
-  admin_enabled            = true
+  name                = var.acr_name
+  resource_group_name = azurerm_resource_group.aks.name
+  location            = azurerm_resource_group.aks.location
+  sku                 = "Basic"
+  admin_enabled       = true
 }
 resource "azurerm_kubernetes_cluster" "aks" {
   name                = var.cluster_name
@@ -18,13 +18,13 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
 
 
- default_node_pool {
-    name       = "default"
-    node_count = var.node_count
-    vm_size    = "Standard_DS2_v2"
+  default_node_pool {
+    name                = "default"
+    node_count          = var.node_count
+    vm_size             = "Standard_DS2_v2"
     enable_auto_scaling = true
-    min_count   = 1
-    max_count   = 2
+    min_count           = 1
+    max_count           = 2
   }
 
   identity {
@@ -44,10 +44,10 @@ resource "helm_release" "nginx_ingress" {
   name       = "ingress-nginx"
   repository = "https://kubernetes.github.io/ingress-nginx"
   chart      = "ingress-nginx"
-  namespace = "ingress-nginx"
+  namespace  = "ingress-nginx"
 
-  set{
-    name = "controller.service.externalTrafficPolicy"
+  set {
+    name  = "controller.service.externalTrafficPolicy"
     value = "Local"
   }
 
@@ -76,7 +76,7 @@ resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   repository = "https://charts.jetstack.io"
   chart      = "cert-manager"
-  namespace = "cert-manager"
+  namespace  = "cert-manager"
 
   set {
     name  = "installCRDs"
@@ -88,7 +88,7 @@ resource "helm_release" "flagger" {
   name       = "flagger"
   repository = "https://flagger.app/"
   chart      = "flagger"
-  namespace = "ingress-nginx"
+  namespace  = "ingress-nginx"
 
   set {
     name  = "prometheus.install"
@@ -111,5 +111,22 @@ resource "helm_release" "flagger_loadtester" {
   name       = "flagger-loadtester"
   repository = "https://flagger.app/"
   chart      = "loadtester"
-  namespace = "loadtester"
+  namespace  = "loadtester"
+}
+
+resource "kubernetes_namespace" "monitoring" {
+  metadata {
+    name = "monitoring"
+  }
+}
+
+resource "helm_release" "prometheus_stack" {
+  name       = "prometh"
+  repository = "https://prometheus-community.github.io/helm-charts"
+  chart      = "prometheus-community/kube-prometheus-stack"
+  namespace  = "monitoring"
+
+  values = [
+    "${file("../monitoring/values.yaml")}"
+  ]
 }
