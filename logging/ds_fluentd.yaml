@@ -98,5 +98,3 @@ spec:
       - name: config-volume
         configMap:
           name: fluentd-config
-securityContext:
-  runAsUser: 0
