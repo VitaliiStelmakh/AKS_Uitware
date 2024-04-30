@@ -4,7 +4,7 @@ stable:
   version: v1
   containerSpecImagePullPolicy: Always
   containerName: bestrong
-  image: maksymperehinets/bestrong-api #maksymperehinets/bestrong-api
+  image: nginx #maksymperehinets/bestrong-api #maksymperehinets/bestrong-api
   imageTag: latest
   resources:
     requestsMemory: 50Mi
@@ -17,7 +17,7 @@ stable:
 canary:
   timeBeforeRollBack: 60
   servicePort: 80
-  interval: 15s
+  interval: 20s
   maxFailed: 5
   maxTraficRouted: 50
   stepWeight: 15
@@ -26,9 +26,6 @@ canary:
 
 # Specify ingress configuration for targets and path
 ingress:
-  target: /
-  ingressPath: /
-  pathType: ImplementationSpecific
   clasteIssuareName: "letsencrypt-prod"
   hostname: test-molip.duckdns.org
 clusterIssuer:
