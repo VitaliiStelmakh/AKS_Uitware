@@ -5,27 +5,57 @@ metadata:
   namespace: kube-system
 data:
   fluent.conf: |
+    # <source>
+    #   @type tail
+    #   path /var/log/containers/*bestrong*.log
+    #   pos_file /var/log/es-containers.log.pos
+    #   path_key log
+    #   tag kubernetes.*
+    #   format json
+    #   follow_inodes true
+    #   read_from_head true
+    #   time_format %Y-%m-%dT%H:%M:%S.%NZ
+    # </source>
+
+    # <match **>
+    #   @type elasticsearch
+    #   host elasticsearch-master.monitoring.svc.cluster.local
+    #   port 9200
+    #   logstash_format true
+    #   flush_interval 10s
+    # </match>
+
+    # <match **>
+    #   @type stdout
+    # </match>
+
+    <match fluent.**>
+      @type null
+    </match>
+    
     <source>
       @type tail
-      path /var/log/containers/*.log
-      pos_file /var/log/es-containers.log.pos
+      path /var/log/containers/*bestrong*.log
+      pos_file /var/log/fluentd-containers.log.pos
+      time_format %Y-%m-%dT%H:%M:%S.%NZ
       tag kubernetes.*
       format json
-      time_format %Y-%m-%dT%H:%M:%S.%NZ
+      read_from_head true
     </source>
-
+    
     <filter kubernetes.**>
-      @type grep
-      <regexp>
-        key $.kubernetes.pod_name
-        pattern /bestrong/
-      </regexp>
+      @type kubernetes_metadata
     </filter>
-
+    
     <match **>
       @type elasticsearch
-      host elasticsearch-master.logging.svc.cluster.local
+      host elasticsearch-master.monitoring.svc.cluster.local
       port 9200
       logstash_format true
       flush_interval 10s
     </match>
+
+    <match **>
+      @type stdout
+    </match>
+    

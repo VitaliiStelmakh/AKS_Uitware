@@ -87,6 +87,12 @@ spec:
           readOnly: true
         - name: config-volume
           mountPath: /fluentd/etc
+        - name: varlogcontainers
+          mountPath: /var/log/containers
+        - name: varlibdocker
+          mountPath: /var/lib/docker
+        - name: varlibdockercontainers
+          mountPath: /var/lib/docker/containers 
       terminationGracePeriodSeconds: 30
       volumes:
       - name: varlog
@@ -98,3 +104,12 @@ spec:
       - name: config-volume
         configMap:
           name: fluentd-config
+      - name: varlogcontainers
+        hostPath:
+          path: /var/log/containers
+      - name: varlibdocker
+        hostPath:
+          path: /var/lib/docker
+      - name: varlibdockercontainers
+        hostPath:
+          path: /var/lib/docker/containers 
