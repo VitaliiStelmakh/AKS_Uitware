@@ -29,10 +29,10 @@ data:
     #   @type stdout
     # </match>
 
-    <match fluent.**>
+    <match fluent.>
       @type null
     </match>
-    
+
     <source>
       @type tail
       path /var/log/containers/*bestrong*.log
@@ -42,14 +42,14 @@ data:
       format json
       read_from_head true
     </source>
-    
-    <filter kubernetes.**>
+
+    <filter kubernetes.>
       @type kubernetes_metadata
     </filter>
-    
+
     <match **>
       @type elasticsearch
-      host elasticsearch-master.monitoring.svc.cluster.local
+      host elasticsearch-master.logging.svc.cluster.local
       port 9200
       logstash_format true
       flush_interval 10s

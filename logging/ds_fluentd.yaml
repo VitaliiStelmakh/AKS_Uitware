@@ -11,15 +11,9 @@ kind: ClusterRole
 metadata:
   name: fluentd
 rules:
-- apiGroups:
-  - ""
-  resources:
-  - pods
-  - namespaces
-  verbs:
-  - get
-  - list
-  - watch
+- apiGroups: [""]
+  resources: ["pods", "namespaces"]
+  verbs: ["get", "watch", "list"]
 
 ---
 kind: ClusterRoleBinding
@@ -54,6 +48,7 @@ spec:
         k8s-app: fluentd-logging
         version: v1
     spec:
+      serviceAccountName: fluentd
       tolerations:
       - key: node-role.kubernetes.io/control-plane
         effect: NoSchedule
@@ -75,7 +70,7 @@ spec:
             value: "http"
         resources:
           limits:
-            memory: 200Mi
+            memory: 300Mi
           requests:
             cpu: 100m
             memory: 200Mi
