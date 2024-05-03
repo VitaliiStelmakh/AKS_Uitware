@@ -1,0 +1,24 @@
+## Bootstrap dependencies
+parameters:
+  acrName: ""
+  serviceConnection: ""
+steps:
+- task: KubernetesManifest@0
+  displayName: Bootstrap namespace
+  inputs:
+    manifests: logging/namespace.yaml
+    kubernetesServiceConnection: aks
+
+- task: KubernetesManifest@0
+  displayName: Deploy config map for fluentd
+  inputs:
+    namespace: logging
+    manifests: ./logging/confmap.yaml
+    kubernetesServiceConnection: aks
+
+- task: KubernetesManifest@0
+  displayName: Deploy fluentd
+  inputs:
+    namespace: logging
+    manifests: ./logging/confmap.yaml
+    kubernetesServiceConnection: aks

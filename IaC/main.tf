@@ -130,3 +130,14 @@ resource "helm_release" "prometheus_stack" {
     "${file("../monitoring/values.yaml")}"
   ]
 }
+
+resource "helm_release" "prometheus_stack" {
+  name       = "prometh"
+  repository = "https://prometheus-community.github.io/helm-charts"
+  chart      = "prometheus-community/kube-prometheus-stack"
+  namespace  = "monitoring"
+
+  values = [
+    "${file("../logging/elasticsearch.yaml")}"
+  ]
+}

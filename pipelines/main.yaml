@@ -6,6 +6,7 @@ trigger:
     include:
     - charts/bestrong-api/*
     - monitoring/*
+    - logging/*
     exclude:
       - "*"
 
@@ -15,6 +16,19 @@ variables:
 
 
 stages:
+- stage: BootstrapDepend
+  displayName: Bootstrap dependencies 
+  pool:
+    vmImage: 'ubuntu-latest'
+  jobs:
+  - job: Create namaspace install fluentd and configure it
+    displayName: Helm install pack and push to ACR
+    steps:
+      - template: templates/dependecies.yaml
+        parameters:
+          acrName: $(acrName)
+          serviceConnection: $(serviceConnection)
+
 - stage: PackHelmChart
   displayName: Helm chart packing and push to ACR 
   pool:
